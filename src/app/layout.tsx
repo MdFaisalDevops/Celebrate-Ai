@@ -1,5 +1,20 @@
 import type { Metadata, Viewport } from 'next';
+import { Outfit, JetBrains_Mono } from 'next/font/google';
 import '@/styles/globals.css';
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  weight: ['400', '600'],
+  display: 'swap',
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -28,15 +43,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={`${outfit.variable} ${jetbrainsMono.variable}`}>
       <body>
         <div className="atmospheric-bg" aria-hidden="true" />
         <a href="#main-content" className="skip-link">

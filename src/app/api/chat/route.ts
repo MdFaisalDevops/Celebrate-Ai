@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAiChatResponse } from '@/lib/aiPlanner';
 import { sanitizeString, checkRateLimit, INPUT_LIMITS } from '@/lib/security';
+import { ChatMessage, EventPlan } from '@/types/event';
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,14 +14,31 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { message, eventPlan, history } = await req.json();
+    let rawBody: { message?: unknown; eventPlan?: unknown; history?: unknown };
+    try {
+      rawBody = (await req.json()) as { message?: unknown; eventPlan?: unknown; history?: unknown };
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON request payload.' }, { status: 400 });
+    }
+
+    if (!rawBody || typeof rawBody !== 'object') {
+      return NextResponse.json({ error: 'Request body must be a valid JSON object.' }, { status: 400 });
+    }
+
+    const { message, eventPlan, history } = rawBody;
 
     const sanitizedMessage = sanitizeString(message, INPUT_LIMITS.CHAT_MESSAGE);
     if (!sanitizedMessage) {
       return NextResponse.json({ error: 'Message cannot be empty.' }, { status: 400 });
     }
 
-    const aiResult = await getAiChatResponse(sanitizedMessage, eventPlan, history || []);
+    const typedHistory: ChatMessage[] = Array.isArray(history) ? (history as ChatMessage[]) : [];
+    const typedPlan: EventPlan | null =
+      eventPlan && typeof eventPlan === 'object' && 'id' in eventPlan
+        ? (eventPlan as EventPlan)
+        : null;
+
+    const aiResult = await getAiChatResponse(sanitizedMessage, typedPlan, typedHistory);
 
     return NextResponse.json({
       success: true,

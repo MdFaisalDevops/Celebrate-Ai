@@ -2,17 +2,14 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import {
-  Users,
   Mail,
   Phone,
-  Star,
   Plus,
   Trash2,
   Sparkles,
   Copy,
   Check,
   Building,
-  CheckCircle2,
   DollarSign
 } from 'lucide-react';
 import { VendorItem, EventPlan } from '@/types/event';
@@ -271,6 +268,7 @@ ${plan.title}`;
               </div>
               <button
                 onClick={() => setNegotiationVendor(null)}
+                aria-label="Close negotiation draft modal"
                 className="btn btn-secondary btn-sm"
                 style={{ padding: '4px 8px', borderRadius: '50%' }}
               >

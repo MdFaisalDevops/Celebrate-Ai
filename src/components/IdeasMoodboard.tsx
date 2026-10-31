@@ -9,8 +9,7 @@ import {
   Check,
   HeartHandshake,
   Lightbulb,
-  Camera,
-  Layers
+  Camera
 } from 'lucide-react';
 import { EventPlan } from '@/types/event';
 

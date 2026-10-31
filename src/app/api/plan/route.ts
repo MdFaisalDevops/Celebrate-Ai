@@ -15,12 +15,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const rawBody = await req.json();
+    let rawBody: Record<string, unknown>;
+    try {
+      rawBody = (await req.json()) as Record<string, unknown>;
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON request payload.' }, { status: 400 });
+    }
+
+    if (!rawBody || typeof rawBody !== 'object') {
+      return NextResponse.json({ error: 'Request body must be a valid JSON object.' }, { status: 400 });
+    }
 
     // Security sanitization and bounds checking
     const answers: WizardAnswers = {
-      eventType: ['wedding', 'birthday', 'community'].includes(rawBody.eventType)
-        ? rawBody.eventType
+      eventType: typeof rawBody.eventType === 'string' && ['wedding', 'birthday', 'community'].includes(rawBody.eventType)
+        ? (rawBody.eventType as WizardAnswers['eventType'])
         : 'wedding',
       title: sanitizeString(rawBody.title || '', INPUT_LIMITS.TITLE) || 'Celebration Event',
       guestCount: Math.min(Math.max(Number(rawBody.guestCount) || 50, 1), 10000),

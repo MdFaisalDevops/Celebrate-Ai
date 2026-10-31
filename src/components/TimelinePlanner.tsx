@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
 import {
-  Calendar,
   Clock,
   CheckCircle2,
   Circle,
@@ -87,7 +86,7 @@ export const TimelinePlanner: React.FC<TimelinePlannerProps> = ({ plan, onUpdate
 
   /** Exports timeline milestones to an iCalendar (.ics) file. */
   const exportICal = useCallback(() => {
-    let icsContent = [
+    const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
       'PRODID:-//CelebrateAI//Event Milestone Schedule//EN',

@@ -10,7 +10,6 @@ import {
   DollarSign,
   MapPin,
   Calendar,
-  CheckCircle2,
   ArrowRight,
   ArrowLeft,
   X,

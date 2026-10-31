@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
-  MessageSquare,
   Sparkles,
   Send,
   X,
@@ -55,7 +54,7 @@ export const AiChatAssistant: React.FC<AiChatAssistantProps> = ({ plan }) => {
     if (isOpen) {
       scrollToBottom();
     }
-  }, [messages, isOpen]);
+  }, [messages, isOpen, scrollToBottom]);
 
   const handleSendMessage = useCallback(async (textToSend?: string) => {
     const query = (textToSend || input).trim();

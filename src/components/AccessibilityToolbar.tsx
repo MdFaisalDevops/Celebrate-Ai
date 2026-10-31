@@ -48,6 +48,7 @@ export const AccessibilityToolbar: React.FC<AccessibilityToolbarProps> = ({ isOp
   return (
     <div
       role="dialog"
+      aria-modal="true"
       aria-labelledby="a11y-title"
       className="glass-card"
       style={{
